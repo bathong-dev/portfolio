@@ -1,13 +1,15 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { motion, useInView } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import SkillsShowcase from './components/SkillsShowcase';
-import ThreeBackground from './components/ThreeBackground';
-import GlassSection from './components/GlassSection';
-import ProfilePhoto from './components/ProfilePhoto';
 import profileData from './data/profile.json';
 import './App.css';
+
+// Lazy load components
+const SkillsShowcase = lazy(() => import('./components/SkillsShowcase'));
+const ThreeBackground = lazy(() => import('./components/ThreeBackground'));
+const GlassSection = lazy(() => import('./components/GlassSection'));
+const ProfilePhoto = lazy(() => import('./components/ProfilePhoto'));
 
 // Experience item component to properly use hooks
 const ExperienceItem = ({ experience, index }) => {
@@ -43,6 +45,9 @@ const ExperienceItem = ({ experience, index }) => {
     </motion.div>
   );
 };
+
+// Load the fallbacks to use while components are loading
+const LoadingFallback = () => <div className="loading-placeholder"></div>;
 
 const App = () => {
   const [formData, setFormData] = useState({
@@ -98,52 +103,64 @@ const App = () => {
 
   return (
     <div className="App">
-      <ThreeBackground />
+      <Suspense fallback={<div className="loading-placeholder bg-placeholder"></div>}>
+        <ThreeBackground />
+      </Suspense>
       <div className="content">
-        <ProfilePhoto name={profileData.personal.name} image={profileData.personal.profileImage} />
-        <GlassSection title="Summary" index={0}>
-          <p>{profileData.personal.summary}</p>
-        </GlassSection>
+        <Suspense fallback={<LoadingFallback />}>
+          <ProfilePhoto name={profileData.personal.name} image={profileData.personal.profileImage} />
+        </Suspense>
+        <Suspense fallback={<LoadingFallback />}>
+          <GlassSection title="Summary" index={0}>
+            <p>{profileData.personal.summary}</p>
+          </GlassSection>
+        </Suspense>
 
-        <GlassSection title="Experience" index={1} timeline>
-          {profileData.experience.map((exp, index) => (
-            <ExperienceItem key={index} experience={exp} index={index} />
-          ))}
-        </GlassSection>
+        <Suspense fallback={<LoadingFallback />}>
+          <GlassSection title="Experience" index={1} timeline>
+            {profileData.experience.map((exp, index) => (
+              <ExperienceItem key={index} experience={exp} index={index} />
+            ))}
+          </GlassSection>
+        </Suspense>
 
-        <GlassSection title="Education" index={2}>
-          <motion.div 
-            className="education-card"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: false, amount: 0.3 }}
-          >
-            <div className="education-header">
-              {profileData.education[0].logo && (
-                <img 
-                  src={profileData.education[0].logo} 
-                  alt="University logo"
-                  className="university-logo"
-                />
-              )}
-              <div>
-                <h3>{profileData.education[0].degree}</h3>
-                <h4>{profileData.education[0].institution}</h4>
-                <span className="education-period">{profileData.education[0].period}</span>
+        <Suspense fallback={<LoadingFallback />}>
+          <GlassSection title="Education" index={2}>
+            <motion.div 
+              className="education-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: false, amount: 0.3 }}
+            >
+              <div className="education-header">
+                {profileData.education[0].logo && (
+                  <img 
+                    src={profileData.education[0].logo} 
+                    alt="University logo"
+                    className="university-logo"
+                  />
+                )}
+                <div>
+                  <h3>{profileData.education[0].degree}</h3>
+                  <h4>{profileData.education[0].institution}</h4>
+                  <span className="education-period">{profileData.education[0].period}</span>
+                </div>
               </div>
-            </div>
-            <ul>
-              {profileData.education[0].description.map((item, i) => (
-                <li key={i}>{item}</li>
-              ))}
-            </ul>
-          </motion.div>
-        </GlassSection>
+              <ul>
+                {profileData.education[0].description.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            </motion.div>
+          </GlassSection>
+        </Suspense>
 
-        <GlassSection title="Skills" index={3}>
-          <SkillsShowcase skills={profileData.skills} />
-        </GlassSection>
+        <Suspense fallback={<LoadingFallback />}>
+          <GlassSection title="Skills" index={3}>
+            <SkillsShowcase skills={profileData.skills} />
+          </GlassSection>
+        </Suspense>
 
         {/* <GlassSection title="Projects" index={4}>
           <div className="projects-grid">
@@ -161,86 +178,88 @@ const App = () => {
           </div>
         </GlassSection> */}
 
-        <GlassSection title="Contact" index={5}>
-          <div className="contact-container">
-            <div className="contact-info">
-              <h3>Get in Touch</h3>
-              <p>Feel free to reach out to me for any opportunities or just to say hello!</p>
-              <div className="contact-details">
-                <div className="contact-item">
-                  <i className="fas fa-envelope"></i>
-                  <span>{profileData.contact.email}</span>
-                </div>
-                <div className="contact-item">
-                  <i className="fas fa-phone"></i>
-                  <span>{profileData.contact.phone}</span>
-                </div>
-                <div className="contact-item">
-                  <i className="fas fa-map-marker-alt"></i>
-                  <span>{profileData.contact.location}</span>
+        <Suspense fallback={<LoadingFallback />}>
+          <GlassSection title="Contact" index={5}>
+            <div className="contact-container">
+              <div className="contact-info">
+                <h3>Get in Touch</h3>
+                <p>Feel free to reach out to me for any opportunities or just to say hello!</p>
+                <div className="contact-details">
+                  <div className="contact-item">
+                    <i className="fas fa-envelope"></i>
+                    <span>{profileData.contact.email}</span>
+                  </div>
+                  <div className="contact-item">
+                    <i className="fas fa-phone"></i>
+                    <span>{profileData.contact.phone}</span>
+                  </div>
+                  <div className="contact-item">
+                    <i className="fas fa-map-marker-alt"></i>
+                    <span>{profileData.contact.location}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="contact-form">
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Your Name"
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="Your Email"
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder="Your Message"
-                    required
-                  />
-                </div>
-                <button 
-                  type="submit" 
-                  className="send-button"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
-                </button>
-                {submitStatus === 'success' && (
-                  <div className="submit-message success">
-                    Message sent successfully!
+              <div className="contact-form">
+                <form onSubmit={handleSubmit}>
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Your Name"
+                      required
+                    />
                   </div>
-                )}
-                {submitStatus === 'error' && (
-                  <div className="submit-message error">
-                    Failed to send message. Please try again.
+                  <div className="form-group">
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="Your Email"
+                      required
+                    />
                   </div>
-                )}
-              </form>
+                  <div className="form-group">
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder="Your Message"
+                      required
+                    />
+                  </div>
+                  <button 
+                    type="submit" 
+                    className="send-button"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
+                  </button>
+                  {submitStatus === 'success' && (
+                    <div className="submit-message success">
+                      Message sent successfully!
+                    </div>
+                  )}
+                  {submitStatus === 'error' && (
+                    <div className="submit-message error">
+                      Failed to send message. Please try again.
+                    </div>
+                  )}
+                </form>
+              </div>
+              <div className="social-links">
+                {profileData.contact.social.map((social, index) => (
+                  <a href={social.url} className="social-link" key={index}>
+                    <i className={`fab fa-${social.platform.toLowerCase()}`}></i>
+                    <span>{social.platform}</span>
+                  </a>
+                ))}
+              </div>
             </div>
-            <div className="social-links">
-              {profileData.contact.social.map((social, index) => (
-                <a href={social.url} className="social-link" key={index}>
-                  <i className={`fab fa-${social.platform.toLowerCase()}`}></i>
-                  <span>{social.platform}</span>
-                </a>
-              ))}
-            </div>
-          </div>
-        </GlassSection>
+          </GlassSection>
+        </Suspense>
       </div>
     </div>
   );

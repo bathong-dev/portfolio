@@ -10,6 +10,15 @@
       content="Web site created using create-react-app"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.svg" />
+    <!-- Performance optimizations -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Preload critical assets -->
+    <link rel="preload" href="%PUBLIC_URL%/profile.jpg" as="image" />
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style" />
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin />
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -25,22 +34,77 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <!-- Inline critical CSS to avoid render blocking -->
     <style>
       html, body {
         margin: 0;
         padding: 0;
         height: 100%;
         overflow-x: hidden;
+        background-color: #0a0a0a;
       }
       #root {
         height: 100%;
+      }
+      /* Add loading state styles */
+      .app-loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #0a0a0a, #1a237e);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
       }
     </style>
     <title>Portfolio</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <!-- Add loading indicator that will be removed once app loads -->
+    <div id="root">
+      <div class="app-loading">
+        <div class="loading-spinner"></div>
+      </div>
+    </div>
+    <!-- Add preload script to initialize before React -->
+    <script>
+      // Initialize performance monitoring
+      window.startTime = performance.now();
+      
+      // Add adaptive performance tweaks
+      const isLowEndDevice = () => {
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const hasLowMemory = navigator.deviceMemory !== undefined && navigator.deviceMemory < 4;
+        const hasLowConcurrency = navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency <= 4;
+        return isMobile || hasLowMemory || hasLowConcurrency;
+      };
+      
+      // Set global config for app to use
+      window.APP_CONFIG = {
+        lowEndMode: isLowEndDevice(),
+        loadTime: 0
+      };
+      
+      // Disable animations on low-end devices if needed
+      if (isLowEndDevice()) {
+        document.documentElement.style.setProperty('--animation-duration', '0.3s');
+      }
+    </script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

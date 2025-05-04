@@ -1,7 +1,19 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState, memo } from 'react';
 import { motion, useInView } from 'framer-motion';
-import * as FaIcons from 'react-icons/fa';
-import * as SiIcons from 'react-icons/si';
+
+// Import icons selectively instead of importing entire libraries
+import { 
+  FaReact, FaJs, FaHtml5, FaCss3Alt, FaNodeJs, FaPython, 
+  FaDocker, FaAws, FaGit, FaDatabase, FaEthereum, FaCube, FaCode 
+} from 'react-icons/fa';
+import { SiNextdotjs, SiVuedotjs, SiSolidity } from 'react-icons/si';
+
+// Pre-define icon map to avoid creating it on each render
+const iconMap = {
+  FaReact, FaJs, FaHtml5, FaCss3Alt, FaNodeJs, FaPython, 
+  FaDocker, FaAws, FaGit, FaDatabase, FaEthereum, FaCube, FaCode,
+  SiNextdotjs, SiVuedotjs, SiSolidity
+};
 
 const getIconColor = (name) => {
   const colors = {
@@ -25,7 +37,21 @@ const getIconColor = (name) => {
   return colors[name] || '#4a90e2';
 };
 
-const SkillBar = ({ rating }) => (
+// Detect low-end devices
+const isLowEndDevice = () => {
+  // Check if mobile
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  
+  // Check device memory if available (Chrome)
+  const hasLowMemory = navigator.deviceMemory !== undefined && navigator.deviceMemory < 4;
+  
+  // Check hardware concurrency if available
+  const hasLowConcurrency = navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency <= 4;
+  
+  return isMobile || hasLowMemory || hasLowConcurrency;
+};
+
+const SkillBar = memo(({ rating }) => (
   <div style={{
     background: 'rgba(255,255,255,0.12)',
     borderRadius: 8,
@@ -44,9 +70,10 @@ const SkillBar = ({ rating }) => (
       background: 'linear-gradient(90deg, #4a90e2, #00c6fb)',
       borderRadius: 8,
       transition: 'width 0.4s',
+      willChange: 'width',
     }} />
   </div>
-);
+));
 
 const cardVariants = {
   visible: (i) => ({
@@ -61,45 +88,74 @@ const cardVariants = {
   },
 };
 
+// Simpler variants for low-end devices
+const simpleCardVariants = {
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.3 },
+  },
+  hidden: {
+    opacity: 0,
+    x: -20,
+    transition: { duration: 0.2 },
+  },
+};
+
+const SkillCard = memo(({ skill, index, inView, lowEndMode }) => {
+  // Get appropriate icon
+  const Icon = iconMap[skill.icon];
+  const iconColor = getIconColor(skill.icon);
+  const variants = lowEndMode ? simpleCardVariants : cardVariants;
+  
+  return (
+    <motion.div
+      className="skill-category"
+      key={skill.name}
+      style={{ 
+        textAlign: 'center',
+        willChange: 'transform, opacity'
+      }}
+      custom={index}
+      variants={variants}
+      initial="hidden"
+      animate={inView ? 'visible' : 'hidden'}
+    >
+      <div style={{ fontSize: 40, marginBottom: 8 }}>
+        {Icon ? <Icon color={iconColor} /> : skill.name[0]}
+      </div>
+      <div style={{ fontWeight: 600, fontSize: 18 }}>{skill.name}</div>
+      <SkillBar rating={skill.rating} />
+      <div style={{ color: '#e0eaff', fontSize: 13, marginTop: 2 }}>
+        Proficiency: {skill.rating}/5
+      </div>
+    </motion.div>
+  );
+});
+
 const SkillsShowcase = ({ skills }) => {
   const ref = useRef();
   const inView = useInView(ref, { amount: 0.2 });
+  const [lowEndMode, setLowEndMode] = useState(false);
+
+  useEffect(() => {
+    // Check for low-end device on component mount
+    setLowEndMode(isLowEndDevice());
+  }, []);
 
   return (
     <div className="skills-grid" ref={ref}>
-      {skills.map((skill, i) => {
-        // Check which icon library to use
-        let Icon;
-        if (skill.icon.startsWith('Fa')) {
-          Icon = FaIcons[skill.icon];
-        } else if (skill.icon.startsWith('Si')) {
-          Icon = SiIcons[skill.icon];
-        }
-
-        const iconColor = getIconColor(skill.icon);
-        return (
-          <motion.div
-            className="skill-category"
-            key={skill.name}
-            style={{ textAlign: 'center' }}
-            custom={i}
-            variants={cardVariants}
-            initial="hidden"
-            animate={inView ? 'visible' : 'hidden'}
-          >
-            <div style={{ fontSize: 40, marginBottom: 8 }}>
-              {Icon ? <Icon color={iconColor} /> : skill.name[0]}
-            </div>
-            <div style={{ fontWeight: 600, fontSize: 18 }}>{skill.name}</div>
-            <SkillBar rating={skill.rating} />
-            <div style={{ color: '#e0eaff', fontSize: 13, marginTop: 2 }}>
-              Proficiency: {skill.rating}/5
-            </div>
-          </motion.div>
-        );
-      })}
+      {skills.map((skill, i) => (
+        <SkillCard 
+          key={skill.name}
+          skill={skill} 
+          index={i} 
+          inView={inView}
+          lowEndMode={lowEndMode}
+        />
+      ))}
     </div>
   );
 };
 
-export default SkillsShowcase; 
+export default memo(SkillsShowcase); 

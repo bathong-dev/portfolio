@@ -541,3 +541,34 @@
   align-items: center;
   margin-bottom: 20px;
 }
+
+/* Loading Placeholder Styles */
+.loading-placeholder {
+  min-height: 200px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+  background-size: 200% 100%;
+  animation: loading-shimmer 1.5s infinite;
+  border-radius: 20px;
+  margin: 2rem 0;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.17);
+}
+
+.bg-placeholder {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: linear-gradient(135deg, #0a0a0a, #1a237e);
+  min-height: 100vh;
+}
+
+@keyframes loading-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
