@@ -1,0 +1,173 @@
+{
+  "personal": {
+    "name": "Ba Thong Huynh",
+    "title": "Blockchain Developer",
+    "profileImage": "./profile.jpg",
+    "summary": "Architecting cutting-edge blockchain solutions using Ethereum, Hyperledger, and Web3 technologies. Specializing in developing secure smart contracts and building scalable decentralized applications that solve real-world problems. Leveraging full-stack expertise to create seamless blockchain integrations that drive business innovation. Committed to advancing distributed ledger technology through robust, performance-optimized implementations."
+  },
+  "skills": [
+    {
+      "name": "Solidity",
+      "icon": "SiSolidity",
+      "rating": 4
+    },
+    {
+      "name": "Ethereum",
+      "icon": "FaEthereum",
+      "rating": 4
+    },
+    {
+      "name": "Web3.js",
+      "icon": "FaCube",
+      "rating": 3
+    },
+    {
+      "name": "Smart Contracts",
+      "icon": "FaCode",
+      "rating": 4
+    },
+    {
+      "name": "React",
+      "icon": "FaReact",
+      "rating": 5
+    },
+    {
+      "name": "Next.js",
+      "icon": "SiNextdotjs",
+      "rating": 4
+    },
+    {
+      "name": "Vue.js",
+      "icon": "SiVuedotjs",
+      "rating": 4
+    },
+    {
+      "name": "JavaScript",
+      "icon": "FaJs",
+      "rating": 5
+    },
+    {
+      "name": "Node.js",
+      "icon": "FaNodeJs",
+      "rating": 4
+    },
+    {
+      "name": "Python",
+      "icon": "FaPython",
+      "rating": 4
+    },
+    {
+      "name": "Docker",
+      "icon": "FaDocker",
+      "rating": 3
+    },
+    {
+      "name": "AWS",
+      "icon": "FaAws",
+      "rating": 3
+    },
+    {
+      "name": "Git",
+      "icon": "FaGit",
+      "rating": 4
+    },
+    {
+      "name": "SQL",
+      "icon": "FaDatabase",
+      "rating": 3
+    }
+  ],
+  "experience": [
+    {
+      "title": "Blockchain Developer",
+      "company": "VNPAY",
+      "period": "Oct 2024 - Mar 2025",
+      "logo": "https://media.licdn.com/dms/image/v2/D560BAQHbA89IgsT3Yg/company-logo_200_200/B56ZVpoKfbGoAU-/0/1741233892866/vnpay_logo?e=1751500800&v=beta&t=TFJtP4tlxy2hlWDphwMY865wFd2pf7F1B_9_xw9zMAY",
+      "description": [
+        "Developed and tested blockchain-based applications on Ethereum and Hyperledger platforms",
+        "Designed smart contracts and built decentralized applications (dApps) for enterprise systems",
+        "Utilized Solidity, Web3.js, and various blockchain frameworks to implement solutions",
+        "Participated in technical training to enhance understanding of blockchain architecture and cryptography"
+      ]
+    },
+    {
+      "title": "Full-stack Developer",
+      "company": "JAPFA",
+      "period": "Oct 2022 - Sep 2024",
+      "logo": "https://media.licdn.com/dms/image/v2/C560BAQFFz7EuTA1-tA/company-logo_200_200/company-logo_200_200/0/1649142934794/japfa_group_logo?e=1751500800&v=beta&t=OHanI3qINE1OembDNb65QG-od59Dfmimid6uhInygz8",
+      "description": [
+        "Designed and deployed scalable microservices architectures, improving application performance by 30%",
+        "Collaborated with cross-functional team to deliver critical features for SaaS platform ahead of schedule",
+        "Implemented CI/CD pipelines using Jenkins and Docker, reducing deployment time by 40%",
+        "Optimized database queries and APIs, cutting response times by 25%"
+      ]
+    },
+    {
+      "title": "Full-stack Developer",
+      "company": "ANDROS",
+      "period": "May 2021 - Jun 2022",
+      "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQHvYpADTA4zuA/company-logo_200_200/company-logo_200_200/0/1673539301142/andros_restauration_logo?e=1751500800&v=beta&t=nm61pTkS08mlsJgAZuCpPvi4EvAfkMb9I2Kz2Ia17OE",
+      "description": [
+        "Developed full-stack applications using React, Node.js, and PostgreSQL, increasing user engagement by 15%",
+        "Migrated legacy systems to AWS cloud infrastructure, improving scalability by 20%",
+        "Created RESTful APIs for integration with third-party platforms, enhancing system interoperability",
+        "Collaborated with product managers to design and implement new features"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor's degree, Computer Science",
+      "institution": "Ho Chi Minh City University of Technology",
+      "period": "Aug 2014 - Apr 2018",
+      "logo": "https://media.licdn.com/dms/image/v2/C560BAQEK6ZLIjmNY7w/company-logo_200_200/company-logo_200_200/0/1630663792279/hcmut_bachkhoa_logo?e=1751500800&v=beta&t=0YCzvZCoEaLakt0XoxXJXigM6x4oPh5aQIbQFDC8bDI",
+      "description": [
+        "Grade: A",
+        "Focus on programming, algorithms, and software engineering",
+        "Participated in coding competitions and hackathons"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "Project 1",
+      "description": "Description of the project and technologies used.",
+      "image": "/project1-placeholder.png",
+      "links": {
+        "demo": "#",
+        "github": "#"
+      }
+    },
+    {
+      "title": "Project 2",
+      "description": "Description of the project and technologies used.",
+      "image": "/project2-placeholder.png",
+      "links": {
+        "demo": "#",
+        "github": "#"
+      }
+    }
+  ],
+  "contact": {
+    "email": "your.email@example.com",
+    "phone": "+1 (123) 456-7890",
+    "location": "Your Location",
+    "social": [
+      {
+        "platform": "Linkedin",
+        "icon": "FaLinkedin",
+        "url": "#"
+      },
+      {
+        "platform": "Github",
+        "icon": "FaGithub",
+        "url": "#"
+      },
+      {
+        "platform": "Twitter",
+        "icon": "FaTwitter",
+        "url": "#"
+      }
+    ]
+  }
+} 
